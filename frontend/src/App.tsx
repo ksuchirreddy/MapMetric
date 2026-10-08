@@ -19,8 +19,10 @@ import { checkKillSwitch } from './lib/tokens';
 import { detectPerformanceTier } from './scene/tier';
 import { SceneMode, PerformanceTier } from './scene/store';
 import { api, FileRecordItem } from './services/api';
+import { PletyLanding } from './components/PletyLanding';
 
 export const App: React.FC = () => {
+  const [viewMode, setViewMode] = useState<'landing' | 'app'>('landing');
   const [activeTab, setActiveTab] = useState<NavItem>('dashboard');
   const [files, setFiles] = useState<FileRecordItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -37,6 +39,14 @@ export const App: React.FC = () => {
   // Modals state
   const [isUploadModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Check URL params if landing mode is specified or toggled
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('view') === 'app') {
+      setViewMode('app');
+    }
+  }, []);
 
   useEffect(() => {
     setTier(detectPerformanceTier());
@@ -153,49 +163,58 @@ export const App: React.FC = () => {
   };
 
   return (
-    <>
-      {/* Signal Orrery 3D Scene Root (when sceneMode !== 'off') */}
-      {sceneMode !== 'off' ? (
-        <SceneRoot
-          files={files}
-          hoveredId={hoveredId}
-          selectedId={selectedFileId}
-          onHoverBody={setHoveredId}
-          onSelectBody={handleSelectFile}
-          tier={tier}
-          sceneMode={sceneMode}
-        />
-      ) : null}
+    <div className="relative min-h-screen bg-black overflow-x-hidden">
+      {/* Underlying Landing Page / Background Interface (Hero Video & Landing Page visuals) */}
+      <PletyLanding onLaunchApp={() => setViewMode('app')} />
 
-      <MainLayout
-        activeTab={activeTab}
-        onSelectTab={setActiveTab}
-        onOpenUploadModal={() => setIsUploadModalOpen(true)}
-        onOpenSearchModal={() => setIsSearchModalOpen(true)}
-        isBackendHealthy={isBackendHealthy}
-        selectedCrs={selectedCrs}
-        onChangeCrs={setSelectedCrs}
-        datasetCount={files.length}
-        sceneMode={sceneMode}
-        onToggleSceneMode={toggleSceneMode}
-      >
-        {sceneMode === 'off' && <StaticOrrery />}
-        {renderActiveView()}
-      </MainLayout>
+      {/* When Get Started or Book Demo is active, overlay the main App interface over the 3D Fluid Sculpture */}
+      {viewMode === 'app' && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-md transition-all duration-300 animate-fadeIn">
+          {/* Signal Orrery 3D Scene Root (when sceneMode !== 'off') */}
+          {sceneMode !== 'off' ? (
+            <SceneRoot
+              files={files}
+              hoveredId={hoveredId}
+              selectedId={selectedFileId}
+              onHoverBody={setHoveredId}
+              onSelectBody={handleSelectFile}
+              tier={tier}
+              sceneMode={sceneMode}
+            />
+          ) : null}
 
-      {/* Modals */}
-      <UploadModal
-        isOpen={isUploadModalOpen}
-        onClose={() => setIsUploadModalOpen(false)}
-        onUploadSuccess={handleUploadSuccess}
-      />
+          <MainLayout
+            activeTab={activeTab}
+            onSelectTab={setActiveTab}
+            onOpenUploadModal={() => setIsUploadModalOpen(true)}
+            onOpenSearchModal={() => setIsSearchModalOpen(true)}
+            isBackendHealthy={isBackendHealthy}
+            selectedCrs={selectedCrs}
+            onChangeCrs={setSelectedCrs}
+            datasetCount={files.length}
+            sceneMode={sceneMode}
+            onToggleSceneMode={toggleSceneMode}
+            onBackToLanding={() => setViewMode('landing')}
+          >
+            {sceneMode === 'off' && <StaticOrrery />}
+            {renderActiveView()}
+          </MainLayout>
 
-      <SearchModal
-        isOpen={isSearchModalOpen}
-        onClose={() => setIsSearchModalOpen(false)}
-        files={files}
-        onSelectFile={handleSelectFile}
-      />
-    </>
+          {/* Modals */}
+          <UploadModal
+            isOpen={isUploadModalOpen}
+            onClose={() => setIsUploadModalOpen(false)}
+            onUploadSuccess={handleUploadSuccess}
+          />
+
+          <SearchModal
+            isOpen={isSearchModalOpen}
+            onClose={() => setIsSearchModalOpen(false)}
+            files={files}
+            onSelectFile={handleSelectFile}
+          />
+        </div>
+      )}
+    </div>
   );
 };

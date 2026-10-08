@@ -17,6 +17,7 @@ interface MainLayoutProps {
   datasetCount?: number;
   sceneMode: SceneMode;
   onToggleSceneMode: () => void;
+  onBackToLanding?: () => void;
 }
 
 export const MainLayout: React.FC<MainLayoutProps> = ({
@@ -30,6 +31,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   onChangeCrs,
   sceneMode,
   onToggleSceneMode,
+  onBackToLanding,
 }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -43,7 +45,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   }, [onOpenSearchModal]);
 
   return (
-    <div className="relative flex h-screen bg-[#06070B] text-[#ECE8DF] font-sans overflow-hidden antialiased selection:bg-[#D6A24A]/30">
+    <div className="relative flex h-screen bg-transparent text-white font-sans overflow-hidden antialiased selection:bg-amber-400/30">
       {/* Floating Brass-Framed Spatial Top Navigation Bar */}
       <SpatialNav
         activeTab={activeTab}
@@ -51,6 +53,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         isBackendHealthy={isBackendHealthy}
         sceneMode={sceneMode}
         onToggleSceneMode={onToggleSceneMode}
+        onBackToLanding={onBackToLanding}
       />
 
       {/* Main Container Full Width */}
@@ -65,7 +68,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         />
 
         {/* Dynamic View Area with 3D Spatial Page Transitions */}
-        <main className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#0B0E17]/40">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 bg-transparent">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}

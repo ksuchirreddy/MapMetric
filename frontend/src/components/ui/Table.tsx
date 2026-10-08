@@ -16,6 +16,7 @@ interface TableProps<T> {
   emptyMessage?: string;
   isLoading?: boolean;
   className?: string;
+  variant?: 'spatial' | 'boxed';
 }
 
 export function Table<T>({
@@ -26,33 +27,43 @@ export function Table<T>({
   emptyMessage = 'No records found.',
   isLoading = false,
   className,
+  variant = 'spatial',
 }: TableProps<T>) {
+  const isSpatial = variant === 'spatial';
+
   return (
-    <div className={cn('overflow-x-auto border border-slate-800 rounded-xl bg-slate-900/60 backdrop-blur-md', className)}>
-      <table className="w-full text-left text-sm text-slate-300 border-collapse">
-        <thead className="bg-slate-950/80 text-xs uppercase font-mono tracking-wider text-slate-400 border-b border-slate-800">
+    <div className={cn(
+      'overflow-x-auto w-full transition-all duration-300',
+      isSpatial ? 'bg-transparent border-0 shadow-none' : 'border border-white/10 rounded-2xl bg-black/40 backdrop-blur-md',
+      className
+    )}>
+      <table className="w-full text-left text-sm text-gray-200 border-collapse">
+        <thead className={cn(
+          'text-xs uppercase font-mono tracking-widest text-gray-400 border-b border-white/10',
+          isSpatial ? 'bg-transparent' : 'bg-white/5'
+        )}>
           <tr>
             {columns.map((col) => (
-              <th key={col.key} className={cn('px-4 py-3.5 font-medium', col.className)}>
+              <th key={col.key} className={cn('px-4 py-4 font-semibold text-[11px]', col.className)}>
                 {col.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-800/60 font-sans">
+        <tbody className="divide-y divide-white/5 font-sans">
           {isLoading ? (
             Array.from({ length: 5 }).map((_, idx) => (
-              <tr key={idx} className="animate-pulse">
+              <tr key={idx} className="animate-pulse border-b border-white/5">
                 {columns.map((col) => (
-                  <td key={col.key} className="px-4 py-3.5">
-                    <div className="h-4 bg-slate-800/80 rounded w-2/3"></div>
+                  <td key={col.key} className="px-4 py-4">
+                    <div className="h-4 bg-white/10 rounded-md w-2/3"></div>
                   </td>
                 ))}
               </tr>
             ))
           ) : data.length === 0 ? (
             <tr>
-              <td colSpan={columns.length} className="px-4 py-10 text-center text-slate-500 font-mono text-xs">
+              <td colSpan={columns.length} className="px-4 py-12 text-center text-gray-500 font-mono text-xs">
                 {emptyMessage}
               </td>
             </tr>
@@ -62,12 +73,13 @@ export function Table<T>({
                 key={keyExtractor(item, index)}
                 onClick={() => onRowClick && onRowClick(item)}
                 className={cn(
-                  'transition-colors duration-150',
-                  onRowClick ? 'cursor-pointer hover:bg-slate-800/60 active:bg-slate-800/80' : 'hover:bg-slate-800/30'
+                  'group transition-all duration-200 border-b border-white/5 relative',
+                  'hover:bg-white/[0.04] hover:border-white/20 hover:-translate-y-0.5 hover:shadow-2xl transform-gpu',
+                  onRowClick ? 'cursor-pointer' : ''
                 )}
               >
                 {columns.map((col) => (
-                  <td key={col.key} className={cn('px-4 py-3.5 font-sans', col.className)}>
+                  <td key={col.key} className={cn('px-4 py-4 font-sans text-xs text-gray-200 group-hover:text-white transition-colors', col.className)}>
                     {col.render ? col.render(item, index) : (item as any)[col.key]}
                   </td>
                 ))}

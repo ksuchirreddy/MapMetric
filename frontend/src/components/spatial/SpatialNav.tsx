@@ -22,6 +22,7 @@ interface SpatialNavProps {
   isBackendHealthy: boolean;
   sceneMode: SceneMode;
   onToggleSceneMode: () => void;
+  onBackToLanding?: () => void;
 }
 
 export const SpatialNav: React.FC<SpatialNavProps> = ({
@@ -30,6 +31,7 @@ export const SpatialNav: React.FC<SpatialNavProps> = ({
   isBackendHealthy,
   sceneMode,
   onToggleSceneMode,
+  onBackToLanding,
 }) => {
   const items: { id: NavItem; label: string; icon: React.ReactNode }[] = [
     { id: 'dashboard', label: 'Ignition', icon: <Globe2 className="w-4 h-4" /> },
@@ -45,7 +47,7 @@ export const SpatialNav: React.FC<SpatialNavProps> = ({
 
   return (
     <header className="fixed top-4 left-1/2 -translate-x-1/2 z-40 w-11/12 max-w-6xl">
-      <div className="flex items-center justify-between p-2 rounded-full bg-[#0B0E17]/85 backdrop-blur-2xl border border-[#D6A24A]/30 shadow-2xl shadow-black/80">
+      <div className="flex items-center justify-between p-2 rounded-full bg-[#0B0E17]/95 border border-[#D6A24A]/40 shadow-2xl shadow-black/90">
         {/* Brand Logo */}
         <div className="flex items-center gap-2 pl-4 pr-2">
           <div className="w-7 h-7 rounded-full bg-[#D6A24A]/20 border border-[#F0C879]/40 flex items-center justify-center text-[#F0C879]">
@@ -85,6 +87,17 @@ export const SpatialNav: React.FC<SpatialNavProps> = ({
 
         {/* Right Action Controls & Scene Mode Toggle */}
         <div className="flex items-center gap-3 pr-2">
+          {/* Back to Landing Button */}
+          {onBackToLanding && (
+            <button
+              onClick={onBackToLanding}
+              className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#D6A24A]/20 border border-[#F0C879]/40 text-[11px] font-mono text-[#F0C879] hover:bg-[#D6A24A]/30 transition-all shadow-md"
+              title="Return to Plety Landing Page"
+            >
+              <span>← Landing</span>
+            </button>
+          )}
+
           {/* Scene Mode Toggle (Full / Calm / Off) */}
           <button
             onClick={onToggleSceneMode}
