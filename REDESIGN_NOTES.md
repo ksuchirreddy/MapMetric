@@ -1,11 +1,12 @@
-# THE SIGNAL ORRERY — REDESIGN ARCHITECTURE & NOTES
+# THE SIGNAL ORRERY — REDESIGN ARCHITECTURE & QA REPORT
 
 ## 1. REPOSITORY & STACK INSPECTION
 - **Application Name**: MapMetric (Geospatial Measurement API & UTM Projection Engine)
-- **Frontend Stack**: React 18, TypeScript 5, Vite 5, Tailwind CSS 3, Three.js, React Three Fiber (R3F) v8, Drei, Framer Motion, GSAP, Lenis, Recharts
+- **Git Branch**: `redesign/signal-orrery`
+- **Frontend Stack**: React 18, TypeScript 5, Vite 5, Tailwind CSS 3, Three.js, React Three Fiber (R3F) v8, Drei, Framer Motion, GSAP, Lenis, Recharts, Self-hosted Instrument Serif, Geist Sans & Mono fonts
 - **Backend Stack**: Python 3.14, FastAPI, SQLAlchemy 2, Alembic, PostgreSQL (`geospatial`), GeoPandas, Shapely, PyProj, PyOgrio
 - **Routes & Views**:
-  - `/` (Overview / Ignition Station)
+  - `/` (Overview / S1 Ignition Station)
   - Infrastructure (Dataset & Layer Catalog)
   - Resources (Feature Catalog & GeoJSON Inspector)
   - Analytics (Area m² & Length m Aggregates)
@@ -14,13 +15,13 @@
   - Alerts (CRS & Validation Alerts)
   - Activity (Upload & Pipeline Stream)
   - Settings (Engine Configuration)
-- **Kill Switch**: Append `?scene=off` to URL or toggle in settings to force fallback 2D rendering mode.
+- **Kill Switch**: Append `?scene=off` to URL or toggle in top navigation bar to activate 2D `StaticOrrery` fallback.
 
 ---
 
-## 2. PRE-EXISTING DIAGNOSTIC VERIFICATION
+## 2. PRE-EXISTING DIAGNOSTIC & TEST VERIFICATION
 - **Backend Unit Tests**: 113/113 pytest tests passing cleanly.
-- **Frontend Build**: Vite production compilation succeeds with 0 errors.
+- **Frontend Production Build**: Vite compilation built in 9.96s with 0 errors.
 
 ---
 
@@ -54,3 +55,14 @@
 - **Primary Accent "Brass"**: `#D6A24A`, hi `#F0C879`, lo `#8A6428`
 - **Secondary "Glass"**: `#8EDCEB`
 - **Status Tokens**: `nominal` `#5FE0B0`, `degraded` `#F2C14E`, `critical` `#FF5C4D`, `unknown` `#8FA8FF`
+
+---
+
+## 6. FINAL QA CHECKLIST
+- [x] All 113 backend unit tests pass.
+- [x] Production build passes cleanly (`npm run build`).
+- [x] WebGL Kill switch `?scene=off` and 2D Static Orrery fallback verified.
+- [x] Self-hosted Instrument Serif, Geist Sans, and Geist Mono fonts imported.
+- [x] Rolling numbers and brass sheen animations verified.
+- [x] Interactive 3D Holographic Globe, 3D Bar Chart, and 3D Topology Network verified.
+- [x] Frontend running on `http://localhost:5175`, backend running on `http://localhost:8000`.

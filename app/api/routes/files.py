@@ -48,6 +48,20 @@ def upload_file(
 
 
 @router.get(
+    "/list",
+    response_model=list[FileDetailResponse],
+    summary="List recent uploaded files",
+)
+def list_files(
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    service: FileService = Depends(get_file_service),
+) -> list[FileDetailResponse]:
+    records = service.list_recent_files(limit=limit, offset=offset)
+    return [FileDetailResponse.model_validate(r) for r in records]
+
+
+@router.get(
     "/{file_id}/",
     response_model=FileDetailResponse,
     summary="Get file metadata and processing status",

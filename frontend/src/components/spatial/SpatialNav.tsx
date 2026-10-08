@@ -19,23 +19,17 @@ import { SceneMode } from '../../scene/store';
 interface SpatialNavProps {
   activeTab: NavItem;
   onSelectTab: (tab: NavItem) => void;
-  onOpenUploadModal: () => void;
-  onOpenSearchModal: () => void;
   isBackendHealthy: boolean;
   sceneMode: SceneMode;
   onToggleSceneMode: () => void;
-  datasetCount?: number;
 }
 
 export const SpatialNav: React.FC<SpatialNavProps> = ({
   activeTab,
   onSelectTab,
-  onOpenUploadModal,
-  onOpenSearchModal,
   isBackendHealthy,
   sceneMode,
   onToggleSceneMode,
-  datasetCount = 0,
 }) => {
   const items: { id: NavItem; label: string; icon: React.ReactNode }[] = [
     { id: 'dashboard', label: 'Ignition', icon: <Globe2 className="w-4 h-4" /> },

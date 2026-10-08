@@ -47,6 +47,15 @@ class FileRepository:
             stmt = stmt.limit(limit)
         return list(self._session.scalars(stmt))
 
+    def list_files(self, *, limit: int = 50, offset: int = 0) -> list[FileRecord]:
+        stmt = (
+            select(FileRecord)
+            .order_by(FileRecord.created_at.desc())
+            .offset(offset)
+            .limit(limit)
+        )
+        return list(self._session.scalars(stmt))
+
     def commit(self) -> None:
         self._session.commit()
 

@@ -177,3 +177,6 @@ class FileService:
                 f"File processing is {record.status}; measurements are only available once COMPLETED."
             )
         return record, self._repo.list_features(file_id, limit=limit, offset=offset)
+
+    def list_recent_files(self, *, limit: int = 50, offset: int = 0) -> list[FileRecord]:
+        return self._repo.list_files(limit=limit, offset=offset)

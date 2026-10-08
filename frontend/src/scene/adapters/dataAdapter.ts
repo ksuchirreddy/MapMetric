@@ -52,7 +52,7 @@ export function adaptFilesToOrreryBodies(files: FileRecordItem[]): OrreryBody[] 
       color,
       status: f.status,
       featureCount: f.feature_count,
-      processingTimeMs: f.processing_time_ms,
+      processingTimeMs: f.processing_time_ms ?? null,
     };
   });
 }

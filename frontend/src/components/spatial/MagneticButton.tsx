@@ -2,10 +2,14 @@ import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { cn } from '../../lib/utils';
 
-interface MagneticButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface MagneticButtonProps {
+  children: React.ReactNode;
   variant?: 'brass' | 'glass' | 'outline';
   icon?: React.ReactNode;
   isLoading?: boolean;
+  disabled?: boolean;
+  className?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const MagneticButton: React.FC<MagneticButtonProps> = ({
@@ -15,7 +19,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
   icon,
   isLoading,
   disabled,
-  ...props
+  onClick,
 }) => {
   const ref = useRef<HTMLButtonElement>(null!);
 
@@ -52,6 +56,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={onClick}
       style={{ x: springX, y: springY }}
       disabled={disabled || isLoading}
       className={cn(
@@ -59,7 +64,6 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
         variants[variant],
         className
       )}
-      {...props}
     >
       {icon && <span className="mr-2">{icon}</span>}
       <span>{children}</span>

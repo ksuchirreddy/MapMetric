@@ -56,6 +56,16 @@ def create_app(settings: Settings | None = None, engine: Engine | None = None) -
     app.state.engine = engine
     app.state.session_factory = create_session_factory(engine)
 
+    from fastapi.middleware.cors import CORSMiddleware
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     register_exception_handlers(app)
     add_body_size_limit(app, settings.max_upload_size_bytes)
     app.include_router(health.router)
