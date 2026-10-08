@@ -11,7 +11,8 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    host: true,
+    strictPort: true,
+    host: '0.0.0.0',
     proxy: {
       '/health': {
         target: 'http://localhost:8000',
