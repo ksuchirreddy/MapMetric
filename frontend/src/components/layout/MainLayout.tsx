@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Sidebar, NavItem } from './Sidebar';
+import React, { useEffect } from 'react';
+import { NavItem } from './Sidebar';
 import { TopBar } from './TopBar';
 import { SpatialNav } from '../spatial/SpatialNav';
 import { SceneMode } from '../../scene/store';
@@ -28,12 +28,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   isBackendHealthy,
   selectedCrs,
   onChangeCrs,
-  datasetCount = 0,
   sceneMode,
   onToggleSceneMode,
 }) => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
@@ -56,18 +53,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         onToggleSceneMode={onToggleSceneMode}
       />
 
-      {/* Collapsible Left 3D Glass Sidebar */}
-      <div className="pt-20">
-        <Sidebar
-          activeTab={activeTab}
-          onSelectTab={onSelectTab}
-          isCollapsed={isSidebarCollapsed}
-          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-          datasetCount={datasetCount}
-        />
-      </div>
-
-      {/* Main Container */}
+      {/* Main Container Full Width */}
       <div className="relative z-10 flex-1 flex flex-col h-screen overflow-hidden pt-20">
         {/* Top Bar Secondary Info Header */}
         <TopBar
