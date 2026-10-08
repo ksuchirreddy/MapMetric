@@ -60,6 +60,12 @@ def create_app(settings: Settings | None = None, engine: Engine | None = None) -
     add_body_size_limit(app, settings.max_upload_size_bytes)
     app.include_router(health.router)
     app.include_router(files.router)
+
+    @app.get("/", include_in_schema=False)
+    def root():
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url="/docs")
+
     return app
 
 
