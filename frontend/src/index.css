@@ -1,0 +1,96 @@
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+@import '@fontsource/geist-sans/400.css';
+@import '@fontsource/geist-sans/500.css';
+@import '@fontsource/geist-mono/300.css';
+@import '@fontsource/geist-mono/500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --void: #06070B;
+  --ink: #0B0E17;
+  --slate: #141A2B;
+  --slate-2: #1C2438;
+  --line: rgba(236,232,223,0.10);
+
+  --paper: #ECE8DF;
+  --paper-dim: #A9A8A0;
+  --paper-faint: #6F7280;
+
+  --brass: #D6A24A;
+  --brass-hi: #F0C879;
+  --brass-lo: #8A6428;
+
+  --glass: #8EDCEB;
+  --nebula-plum: #3B2A5C;
+  --deep-indigo: #121A38;
+
+  --status-nominal: #5FE0B0;
+  --status-degraded: #F2C14E;
+  --status-critical: #FF5C4D;
+  --status-unknown: #8FA8FF;
+}
+
+@layer base {
+  body {
+    background-color: var(--void);
+    color: var(--paper);
+    font-family: 'Geist Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2 {
+    font-family: 'Instrument Serif', serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'Geist Mono', monospace;
+  }
+}
+
+/* Brass Sheen Animation for Italic Words */
+@keyframes brassSheen {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.brass-sheen {
+  background: linear-gradient(
+    90deg,
+    #D6A24A 0%,
+    #F0C879 50%,
+    #D6A24A 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: brassSheen 6s infinite linear;
+}
+
+/* Rolling Digits Animation */
+@keyframes rollDigit {
+  0% { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0%); opacity: 1; }
+}
+
+.roll-digit {
+  display: inline-block;
+  animation: rollDigit 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--void);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--slate-2);
+  border-radius: 3px;
+}
